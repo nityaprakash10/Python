@@ -1,53 +1,52 @@
-"""
-Tree_sort algorithm.
-
-Build a BST and in order traverse.
-"""
-
-
-class node():
-    # BST data structure
+class Node:
+    """Base class to contain the tree metadata per instance of the class"""
     def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-
-    def insert(self, val):
-        if self.val:
-            if val < self.val:
-                if self.left is None:
-                    self.left = node(val)
-                else:
-                    self.left.insert(val)
-            elif val > self.val:
-                if self.right is None:
-                    self.right = node(val)
-                else:
-                    self.right.insert(val)
-        else:
-            self.val = val
-
-
-def inorder(root, res):
-    # Recursive travesal
-    if root:
-        inorder(root.left, res)
-        res.append(root.val)
-        inorder(root.right, res)
-
-
-def tree_sort(arr):
-    # Build BST
-    if len(arr) == 0:
-        return arr
-    root = node(arr[0])
-    for i in range(1, len(arr)):
-        root.insert(arr[i])
-    # Traverse BST in order.
-    res = []
-    inorder(root, res)
-    return res
-
-
-if __name__ == '__main__':
-    print(tree_sort([10, 1, 3, 2, 9, 14, 13]))
+        self.l_child = None
+        self.r_child = None
+        self.data = val
+def binary_insert(root, node):
+    """This recursive function will insert the objects into the tree"""
+    if root is None:  # If we don't have a root node
+        root = node  # Set the root node equal to the first node argument that was provided
+    else:  # We already have a root
+        if root.data > node.data:  # If our current root is bigger than the node we are about to insert
+            if root.l_child is None:  # If we don't have any node to the left of root
+                root.l_child = node  # Insert the node as the left node under root
+            else:  # There's already a node to the left of root
+                binary_insert(
+                    root.l_child, node
+                )  # Call the insert function recursively with the left node value as the
+                # temp root for comparison
+        else:  # Node to be inserted is bigger than root (going right side)
+            if root.r_child is None:  # if there's no right child
+                root.r_child = node  # insert the node as the right child of root (under)
+            else:  #
+                binary_insert(
+                    root.r_child, node
+                )  # Call the insert function recursively with the right node value as the
+                # temp root for comparison
+def post_sort_print(root):
+    if not root:
+        return None
+    post_sort_print(root.l_child)
+    print(root.data)
+    post_sort_print(root.r_child)
+def pre_sort_print(root):
+    if not root:
+        return None
+    print(root.data)
+    pre_sort_print(root.l_child)
+    pre_sort_print(root.r_child)
+r = Node(6)
+binary_insert(r, Node(2))
+binary_insert(r, Node(8))
+binary_insert(r, Node(90))
+binary_insert(r, Node(23))
+binary_insert(r, Node(12))
+binary_insert(r, Node(91))
+print("---------")
+print("PRE SORT")
+pre_sort_print(r)
+print("---------")
+print("POST SORT")
+post_sort_print(r)
